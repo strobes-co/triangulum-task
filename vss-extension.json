@@ -1,0 +1,36 @@
+{
+    "manifestVersion": 1,
+    "id": "triangulum-scan",
+    "name": "Triangulum CLI Scan",
+    "version": "1.0.0",
+    "publisher": "Akhil Reni",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],
+    "description": "Scan the repo for security Vulnerabilities using publicly accessible scanners",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "icons": {
+        "default": "images/logo.png"
+    },
+    "files": [
+        {
+            "path": "triangulumScan"
+        }
+    ],
+    "contributions": [
+        {
+            "id": "custom-build-release-task",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "triangulumScan"
+            }
+        }
+    ]
+}
