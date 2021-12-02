@@ -15,14 +15,6 @@
     "instanceNameFormat": "Triangulum Scan",
     "inputs": [
         {
-            "name": "rules",
-            "type": "string",
-            "label": "Rules to check against for vulnerabilities",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Rules to check against for vulnerabilities, comma seprated(c2,m3) means only 2 critical & 3 medium vulnerabilities are allowed"
-        },
-        {
             "name": "download_url",
             "type": "string",
             "label": "Executable URL",

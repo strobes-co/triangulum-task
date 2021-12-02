@@ -17,10 +17,8 @@ function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             // inputs defined in action metadata file(action.yml)
-            const rules = core.getInput('rules') || "";
             const fileUrl = core.getInput('download_url') || "";
             const sendToStrobes = core.getInput('send_to_strobes') || "";
-            console.log(`Rules: ${rules}`);
             console.log(`Triangulum CLI download URL: ${fileUrl}`);
             // Get git clone dir
             const gitCloneDir = process.env.BUILD_REPOSITORY_LOCALPATH || "";
@@ -37,7 +35,7 @@ function run() {
             yield exec('chmod', ['+x', triangulumPath]);
             // Add optional send to strobes flag, if enabled will send found
             // vulnerabilities to strobes
-            var args = ['--cli', '--cfg', configPath, '--rules', rules];
+            var args = ['--cli', '--cfg', configPath];
             if (sendToStrobes === 'true' || 'True' || 'T' || 't') {
                 args.push('--sendtostrobes');
             }
