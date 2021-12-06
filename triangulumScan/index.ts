@@ -37,7 +37,17 @@ async function run() {
         }
 
         // Run triangulum CLI Scan
-        await exec(triangulumPath, args);
+        script = await exec(triangulumPath, args);
+
+        // data coming from the standard out
+        script.stdout.on('data', function(data){
+            console.log(data.toString());
+        });
+
+        // data coming from the standard error
+        script.stderr.on('data', function(data){
+            console.log(data.toString());
+        });
 
     } catch (error: any) {
         core.setResult(core.TaskResult.Failed, error.message);
