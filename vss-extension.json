@@ -3,7 +3,7 @@
     "id": "triangulum-scan",
     "name": "Triangulum CLI Scan",
     "version": "1.0.0",
-    "publisher": "WeSecureApp",
+    "publisher": "AkhilReni",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"

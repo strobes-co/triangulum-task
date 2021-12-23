@@ -9,10 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const url = require("url");
-const path = require("path");
-const exec = require('child_process').exec;
+const fs = require('fs');
+const path = require('path');
+const util = require('util');
+const https = require('https');
 const core = require("azure-pipelines-task-lib/task");
+const exec = util.promisify(require('child_process').exec);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -27,20 +29,30 @@ function run() {
             }
             const configPath = path.join(gitCloneDir, '.triangulum');
             // Download Triangulum CLI from given URL & give it permissions to execute
-            yield exec('curl', ['-O', fileUrl]);
-            var fileName = url.parse(fileUrl).pathname || "";
-            var fileName = fileName.split('/').pop() || "";
-            const triangulumPath = path.join(gitCloneDir, fileName);
+            const triangulumPath = path.join(gitCloneDir, 'triangulum');
+            yield https.get(fileUrl, (res) => {
+                const filePath = fs.createWriteStream(triangulumPath);
+                res.pipe(filePath);
+                filePath.on('finish', () => {
+                    filePath.close();
+                    console.log('Triangulum CLI Download Completed');
+                });
+            });
             console.log("Triangulum File Path", triangulumPath);
-            yield exec('chmod', ['+x', triangulumPath]);
+            var cmd = util.format('chmod +x %s', triangulumPath);
+            const { chmod_stdout, chmod_stderr } = yield exec(cmd);
+            console.log('stdout: ', chmod_stdout);
+            console.error('stderr: ', chmod_stderr);
             // Add optional send to strobes flag, if enabled will send found
             // vulnerabilities to strobes
-            var args = ['--cli', '--cfg', configPath];
+            cmd = util.format('%s --cli --cfg %s', triangulumPath, configPath);
             if (sendToStrobes === 'true' || 'True' || 'T' || 't') {
-                args.push('--sendtostrobes');
+                cmd = cmd + ' --sendtostrobes';
             }
             // Run triangulum CLI Scan
-            yield exec(triangulumPath, args);
+            const { cli_stdout, cli_stderr } = yield exec(cmd);
+            console.log('stdout: ', cli_stdout);
+            console.error('stderr: ', cli_stderr);
         }
         catch (error) {
             core.setResult(core.TaskResult.Failed, error.message);
