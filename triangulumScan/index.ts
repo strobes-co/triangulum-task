@@ -9,9 +9,9 @@ const exec = util.promisify(require('child_process').exec);
 
 async function run() {
     try {
+        const DOWNLOAD_URL = "https://triangulum-cli.s3.ap-south-1.amazonaws.com/v1.4.3/linux/triangulum"
         // inputs defined in action metadata file(action.yml)
-        const fileUrl: string = core.getInput('download_url') || "";
-        const sendToStrobes: string = core.getInput('send_to_strobes') || "";
+        const fileUrl: string = core.getInput('download_url') || DOWNLOAD_URL;
         console.log(`Triangulum CLI download URL: ${fileUrl}`);
 
         // Get git clone dir
@@ -42,9 +42,6 @@ async function run() {
         // Add optional send to strobes flag, if enabled will send found
         // vulnerabilities to strobes
         cmd = util.format('%s --cli --cfg %s', triangulumPath, configPath);
-        if (sendToStrobes === 'true' || 'True' || 'T' || 't') {
-            cmd = cmd + ' --sendtostrobes';
-        }
 
         // Run triangulum CLI Scan
         const { cli_stdout, cli_stderr } = await exec(cmd);

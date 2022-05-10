@@ -1,16 +1,16 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
     "id": "0d01a405e8484ff28aa1b231eb36ef61",
-    "name": "Triangulum_Scan",
+    "name": "Triangulum-Scan",
     "friendlyName": "Triangulum CLI Scan",
     "description": "Scan the repo for security Vulnerabilities using publicly accessible scanners",
     "helpMarkDown": "",
-    "category": "Tool",
+    "category": "Azure Pipelines",
     "author": "Akhil Reni",
     "version": {
         "Major": 1,
         "Minor": 0,
-        "Patch": 0
+        "Patch": 1
     },
     "instanceNameFormat": "Triangulum Scan",
     "inputs": [
@@ -21,14 +21,6 @@
             "defaultValue": "",
             "required": true,
             "helpMarkDown": "URL to download Triangulum executable from"
-        },
-        {
-            "name": "send_to_strobes",
-            "type": "string",
-            "label": "Send bugs to strobes",
-            "defaultValue": "",
-            "required": false,
-            "helpMarkDown": "Send bugs in scan to Strobes using Strobes client"
         }
     ],
     "execution": {
